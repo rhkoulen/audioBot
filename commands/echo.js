@@ -3,7 +3,7 @@ module.exports = {
     aliases: ['e'],
     description: 'Argument tester. Echoes message.',
     execute(message, args, rootcmd, client, Discord) {
-        const input = '';
+        let input = '';
         args.forEach(arg => {input + arg + ' '});
         message.channel.send(input);
         if (rootcmd === 'e') {

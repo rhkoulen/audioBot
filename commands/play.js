@@ -45,7 +45,7 @@ async function getConnection(voice_channel) {
 
 module.exports = {
     name: 'play',
-    aliases: [/** Each alias should have it's own conditional. */],
+    aliases: ['queue'],
     description: 'Manages queueing and playing of songs',
     async execute(message, args, rootcmd, client, Discord) {
         const guild_id = message.guild.id;
@@ -84,6 +84,15 @@ module.exports = {
             connection.destroy();
             connections.delete(guild_id);
             console.error('Bot successfully disconnected.');
+        }
+        /** @todo Put this in a discord embed, not messages. */
+        if (rootcmd === 'queue') {
+            message.channel.send("Queue");
+            let i = 1;
+            for (song in song_queue) {
+                message.channel.send(i + ". " + song.title);
+                i++;
+            }
         }
     }
 }
