@@ -76,8 +76,6 @@ module.exports = {
                 player.play(resource);
                 await entersState(player, AudioPlayerStatus.Playing, 5e3);
                 message.channel.send(`${currentSong.title} is now playing.`);
-                console.log(resourceStream);
-                console.log(resource);
                 await entersState(player, AudioPlayerStatus.Idle, 0x7fffffff);
             }
             subscription.unsubscribe();
@@ -87,12 +85,19 @@ module.exports = {
         }
         /** @todo Put this in a discord embed, not messages. */
         if (rootcmd === 'queue') {
-            message.channel.send("Queue");
+            prefix = "Queue:\n";
             let i = 1;
-            for (song in song_queue) {
-                message.channel.send(i + ". " + song.title);
+            let q_msg = "";
+            for (const song of song_queue) {
+                q_msg = "" + i + ". " + song.title + "\n";
                 i++;
             }
+            
+            if (q_msg === "") {
+                message.channel.send(prefix + "No songs are queued!");
+                return;
+            }
+            message.channel.send(prefix + q_msg);
         }
     }
 }
