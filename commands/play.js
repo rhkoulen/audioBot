@@ -70,7 +70,6 @@ module.exports = {
             const subscription = connection.subscribe(player);
             while (song_queue.length != 0) {
                 // Create an audio stream for the video.
-                console.log('This shouldn\'t appear twice');
                 let currentSong = song_queue.shift();
                 let resourceStream = ytdl(currentSong.url, { filter: 'audioonly' });
                 let resource = createAudioResource(resourceStream);
@@ -79,18 +78,12 @@ module.exports = {
                 message.channel.send(`${currentSong.title} is now playing.`);
                 console.log(resourceStream);
                 console.log(resource);
-                try {
-                    await entersState(player, AudioPlayerStatus.Idle, 100e3);
-                } catch (err) {
-                    console.log(err);
-                }
+                await entersState(player, AudioPlayerStatus.Idle, 0x7fffffff);
             }
             subscription.unsubscribe();
-            console.error('Unsubbed');
             connection.destroy();
-            console.error('Destroyed');
             connections.delete(guild_id);
-            console.error('Cleared');
+            console.error('Bot successfully disconnected.');
         }
     }
 }
