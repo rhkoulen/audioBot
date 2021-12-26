@@ -45,7 +45,7 @@ async function getConnection(voice_channel) {
 
 module.exports = {
     name: 'play',
-    aliases: ['queue'],
+    aliases: ['queue', 'remove'],
     description: 'Manages queueing and playing of songs',
     async execute(message, args, rootcmd, client, Discord) {
         const guild_id = message.guild.id;
@@ -85,11 +85,11 @@ module.exports = {
         }
         /** @todo Put this in a discord embed, not messages. */
         if (rootcmd === 'queue') {
-            prefix = "Queue:\n";
+            let prefix = "Queue:\n";
             let i = 1;
             let q_msg = "";
             for (const song of song_queue) {
-                q_msg = "" + i + ". " + song.title + "\n";
+                q_msg += `${i}. ${song.title}\n`;
                 i++;
             }
             
@@ -98,6 +98,12 @@ module.exports = {
                 return;
             }
             message.channel.send(prefix + q_msg);
+        }
+        if (rootcmd === 'remove') {
+            let num = parseInt(args[0]);
+            if (num.isInteger() && 0 < num <= song_queue.length) {
+                song_queue.splice(num - 1, 1);
+            }
         }
     }
 }
